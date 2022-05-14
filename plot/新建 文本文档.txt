@@ -1,0 +1,72 @@
+for(i in c(2:dim(PM10_data)[2])){
+  dd<-PM2.5_data[,c(1,i)]%>%na.omit()%>%as_tsibble(index=date)
+  p1=autoplot(dd)
+  plot_lst1[[i-1]] <- p1
+}
+multiplot(plotlist = plot_lst1, cols = 4)
+
+
+plot_lst1 <- list()
+for(i in c(2:dim(PM10_data)[2])){
+  dd<-PM2.5_data[,c(1,i)]%>%na.omit()%>%as_tsibble(index=date)
+  q=dd[,2]%>%unlist()
+  p1=ggplot(dd,aes(x = dd$date,y = q)) + geom_line(colour = "red")
+  plot_lst1[[i-1]] <- p1
+}
+multiplot(plotlist = plot_lst1, cols = 4)
+plot_lst1[1]
+
+
+for(i in c(2:dim(PM2.5_data)[2])){
+  dd<-PM2.5_data[,c(1,i)]%>%na.omit()%>%as_tsibble(index=date)
+  NAM=names(dd)
+  city=NAM[2]
+  qqq=dd[,2]%>%unlist()
+  c=dd%>%ggplot(aes(x = dd$date,y = qqq)) + geom_line(colour = "red")+ ylab("Index")+ ylab("Date")+labs(title = city)
+  plot_lst[[i-1]] <- c
+}
+plot_lst[[1]]
+multiplot(plotlist = plot_lst,cols = 2)
+
+
+
+for(i in c(2:dim(PM2.5_data)[2])){
+  dd<-PM2.5_data[,c(1,i)]%>%na.omit()%>%as_tsibble(index=date)
+  p1=autoplot(dd)
+  plot_lst1[[i-1]] <- p1
+}
+Rmisc::multiplot(plotlist = plot_lst1, cols = 4)
+
+
+plot_lst1<- list()
+for(i in c(2:dim(PM10_data)[2])){
+  dd<-PM2.5_data[,c(1,i)]%>%na.omit()%>%as_tsibble(index=date)
+  p1=autoplot(dd)
+  qqq=dd[,2]%>%unlist()
+  p1=ggplot()
+  plot_lst1[[i-1]] <- p1
+}
+Rmisc::multiplot(plotlist = plot_lst1, cols = 4)
+plot_lst1
+
+for(i in c(2:dim(PM2.5_data)[2])){
+  dd<-PM2.5_data[,c(1,i)]%>%na.omit()%>%as_tsibble(index=date)
+  NAM=names(dd)
+  city=NAM[2]
+  qqq=dd[,2]%>%unlist()
+  c=dd%>%ggplot(aes(x = dd$date,y = qqq)) + geom_line(colour = "red")+ ylab("Index")+ ylab("Date")+labs(title = city)
+  plot_lst[[i-1]] <- c
+}	
+plot_lst[[1]]
+Rmisc::multiplot(plotlist = plot_lst,cols = 2)
+
+
+dd<-PM2.5_data[,c(1,5)]%>%na.omit()%>%as_tsibble(index=date)
+NAM=names(dd)
+city=NAM[2]
+qqq=dd[,2]%>%unlist()
+c=dd%>%ggplot(aes(x = dd$date,y =qqq)) + geom_line(colour = "red")+ ylab("Index")+ ylab("Date")+labs(title = city)
+c
+plot_lst[[2]] <- c
+plot_lst[[2]]
+Rmisc::multiplot(plotlist = plot_lst,cols = 2)
