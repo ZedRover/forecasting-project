@@ -11,8 +11,8 @@ sys.path.append('../')
 import config
 from sklearn.metrics import r2_score
 plt.rcParams['font.sans-serif'] = ['Arial Unicode MS']
-
-
+import time
+SAVE_DIR='.'
 
 
 
@@ -29,9 +29,10 @@ def visualize_loss(history, title):
     plt.ylabel("Loss")
     plt.legend()
     plt.show()
+    plt.savefig(SAVE_DIR+'/'+title+'.png')
 
 
-visualize_loss(history, "Training and Validation Loss")
+
 
 
 
@@ -54,10 +55,7 @@ def show_plot(plot_data, delta, title):
     plt.xlim([time_steps[0], (future + 5) * 2])
     plt.xlabel("Time-Step")
     plt.show()
-    return
-
-
-
+    plt.savefig(SAVE_DIR+'/'+title+'.png')
 
 
 
@@ -75,7 +73,7 @@ if __name__=='__main__':
     raw_df.columns
     raw_df = raw_df.drop(['Source.Name','date','hour','tag'],axis=1)
     split_fraction = 0.725
-    train_split = int(split_fraction * int(df.shape[0]))
+    train_split = int(split_fraction * int(raw_df.shape[0]))
     step = 1
 
     past = 200
@@ -93,6 +91,7 @@ if __name__=='__main__':
             df_city = raw_df[raw_df['type']==target+'_24h'].drop('type',axis=1)
             df_city['label'] = df_city[target].shift(-horizon)
             df = df_city.dropna()
+            
 
 
 
@@ -171,15 +170,14 @@ def train_sub_model(df,target,city):
                 #    tensorboard_callback],
     )
 
-
+    visualize_loss(history, "Training and Validation Loss of "+target+"_"+city)
 
     for x, y in dataset_val.take(3):
         show_plot(
             [x[0][:, 1].numpy(), y[0].numpy(), model.predict(x)[0]],
             12,
-            "Single Step Prediction",
+            "Single Step Prediction of "+target+"_"+city,
         )
-
 
     pred = model.predict(dataset_val)
 
@@ -192,7 +190,7 @@ def train_sub_model(df,target,city):
     plt.plot(y_true,label='true')
     plt.legend()
     plt.title('r2_score:{:.4f}'.format(r2_score(y_true,y_pred)))
+    plt.savefig(SAVE_DIR+'/'+target+'_'+city+'_'+str(round(time.time()))+'.png')
 
 
-
-    model.save('./models/lstm_128_dense_1.h5')
+    # model.save('./models/lstm_128_dense_1.h5')
