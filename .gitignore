@@ -4,3 +4,4 @@
 .DS_Store
 **/*.v2
 *.h5
+__pycache__
