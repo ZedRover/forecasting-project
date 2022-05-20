@@ -30,15 +30,14 @@ def run_sub(param):
 
     #
 
-    model = pm.auto_arima(df_tgt_ct.y, start_p=1, start_q=1,
+    model = pm.auto_arima(df_tgt_ct['y'], start_p=1, start_q=1,
                         information_criterion='aic',
                         test='adf',       # use adftest to find optimal 'd'
-                        max_p=10, max_q=10, # maximum p and q
+                        max_p=10, max_q=10,max_d=10, # maximum p and q
+                        start_d=1,
                         m=1,              # frequency of series
                         d=None,           # let model determine 'd'
                         seasonal=True,   # No Seasonality
-                        start_P=0, 
-                        D=0, 
                         trace=True,
                         error_action='ignore',  
                         suppress_warnings=True, 
@@ -71,6 +70,8 @@ def run_sub(param):
                     upper_series, 
                     color='k', alpha=.15)
     plt.legend()
+    plt.xlabel('days')
+    plt.ylabel(target)
     plt.title("Final Forecast of ARIMA")
     plt.savefig('./pic/auto/{}_{}_forecast.png'.format(target,city))
     plt.close()

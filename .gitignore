@@ -5,3 +5,4 @@
 **/*.v2
 *.h5
 **/__pycache__
+!data/data_daily_with_aqi.csv
