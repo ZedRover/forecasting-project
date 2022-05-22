@@ -1,7 +1,7 @@
 **/*.xlsx
-**/*.csv
 .DS_Store
 **/*.v2
 *.h5
 **/__pycache__
+data/*.csv
 !data/data_daily_with_aqi.csv
